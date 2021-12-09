@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+
+<% include ./head.ejs %>
+
+    <div id="container">
+        <% include ./loginheader.ejs %>
+    </div>
+
+    <body>
+        <div class="main">
+            <div class="title">
+                날짜별 접종현황
+            </div>
+
+            <div class="div-visualization">
+
+                <div id="dateChart" style="width: 1000px; height: 300px;"></div>
+                <script>
+
+                    google.charts.load('current', { 'packages': ['corechart'] });
+                    google.charts.setOnLoadCallback(drawChart_date);
+
+                    function drawChart_date() {
+
+                        var data = google.visualization.arrayToDataTable([
+                            ['date', '1차접종완료'],
+            
+                                            <%for (var i = 0; i < vaccine_1.length; i++) {
+                            var oneItem = vaccine_1[i];
+                            var r_date = new Date(oneItem.r_date);
+                            var year = r_date.getFullYear();
+                            var month = ("0" + (1 + r_date.getMonth())).slice(-2);
+                            var day = ("0" + r_date.getDate()).slice(-2);
+                            r_date = year + "-" + month + "-" + day;
+                                %>
+
+                                ['<%=r_date%>', parseInt("<%=oneItem.cnt_1%>")],
+                                             <% } %>
+                                            ]);
+
+                        var options = {
+                            title: '1차 접종 날짜별 예약 현황',
+                        };
+
+                        var chart = new google.visualization.LineChart(document.getElementById('dateChart'));
+                        chart.draw(data, options);
+                    }
+
+                </script>
+
+                <div id="dateChart2" style="width: 1000px; height: 300px;"></div>
+                <script>
+
+                    google.charts.load('current', { 'packages': ['corechart'] });
+                    google.charts.setOnLoadCallback(drawChart_date2);
+
+                    function drawChart_date2() {
+
+                        var data = google.visualization.arrayToDataTable([
+                            ['date', '2차 접종완료'],
+            
+                                            <%for (var i = 0; i < vaccine_complete.length; i++) {
+                            var oneItem = vaccine_complete[i];
+                            var r_date = new Date(oneItem.r_date);
+                            var year = r_date.getFullYear();
+                            var month = ("0" + (1 + r_date.getMonth())).slice(-2);
+                            var day = ("0" + r_date.getDate()).slice(-2);
+                            r_date = year + "-" + month + "-" + day;
+                                %>
+
+                                ['<%=r_date%>', parseInt("<%=oneItem.cnt_2%>")],
+                                             <% } %>
+                                            ]);
+
+                        var options = {
+                            title: '2차 접종 날짜별 예약 현황',
+                        };
+
+                        var chart = new google.visualization.LineChart(document.getElementById('dateChart2'));
+                        chart.draw(data, options);
+                    }
+
+                </script>
+
+            </div>
+        </div>
+    </body>
+
+    <% include ./footer.ejs %>
+
+</html>

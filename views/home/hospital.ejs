@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <% include ./head.ejs %>
+  <body>
+    <div id="container">
+      <% include ./logoutheader.ejs %>
+    </div>
+</body>
+<body class="main-layout">
+  <!-- section -->
+  <div id="contact" class="section layout_padding" method="post">
+    <div class="container-fluid">
+
+      <div class="heading">
+        <h2><strong class="theme_blue">병원 등록</strong></h2>
+      </div>
+      <div class="full margin_top_20">
+        <form id="hospital" action="hospital" method="post">
+          <div class="row">
+            <div>
+
+            </div>
+            <div>
+              <input class="form-control" placeholder="Hospital name"  type="text" name="Hospital_name" required="">
+            </div>
+            <div>
+              <input class="form-control" placeholder="Phone" type="text" name="Phone" required="">
+            </div>
+            <div>
+              <script>
+                function dongChange(e) {
+                  var target = $("select[id='Dong']");
+                  target.children().remove();         
+                                  <%                   
+                                    for (var i = 0; i < dong.length; i++) {
+                                        var oneItem = dong[i];
+                                        var name = oneItem.dong_name.replace(/\r/g, "");
+                                  %>  
+                                    if (<%= oneItem.gu_id %> == document.getElementById("Gu").value)
+                                        target.append("<option value = <%=oneItem.dong_id%>>" + "<%=name%>" + "</option>");
+                                  <% } %>
+                                };
+              </script>
+
+              <select id="City" name="City">
+                <% for(var i=0; i<city.length; i++){ var oneItem=city[i]; %>
+                  <option value=<%=oneItem.city_id%>><%=oneItem.city_name%>
+                  </option>
+                  <% } %>
+              </select>
+              <select id="Gu" name="Gu" onchange="dongChange(this.value)">
+                <% for(var i=0; i<gu.length; i++){ var oneItem=gu[i]; %>
+                  <option value=<%=oneItem.gu_id%>><%=oneItem.gu_name%>
+                  </option>
+                  <% } %>
+              </select>
+              <select id="Dong" name="Dong" class="Dong" >
+                <option>선택</option>
+              </select>
+            </div>
+            <div>
+                <input class="form-control" placeholder="Address Detail" type="text" name="Address" required="">
+            </div>
+          </div>
+        <button class="sub_bt" type="submit">register</button>
+        </form>
+      </div>
+    </div>
+    </div>
+</body>
+<% include ./../footer.ejs %>
+</html>

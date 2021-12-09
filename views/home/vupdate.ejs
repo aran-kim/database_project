@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<% include ./head.ejs %>
+
+    <body>
+        <div id="container">
+            <% include ./logoutheader.ejs %>
+        </div>
+    </body>
+    <script>
+        var i_vacctine = new Pikaday({
+            field: document.getElementById('datepicker'),
+            format: 'yyyy-MM-dd',
+            toString(date, format) {
+                let day = ("0" + date.getDate()).slice(-2);
+                let month = ("0" + (date.getMonth() + 1)).slice(-2);
+                let year = date.getFullYear();
+                return `${year}-${month}-${day}`;
+            }
+        });
+    </script>
+
+    <body class="main-layout">
+        <!-- section -->
+        <div id="contact" class="section layout_padding" method="post">
+            <div class="container-fluid">
+
+                <div class="heading">
+                    <h2><strong class="theme_blue">백신 등록</strong></h2>
+                    <br>
+                </div>
+                <div class="full margin_top_20">
+                    <form id="vupdate" action="/home/vupdate" method="post">
+                        <input type="hidden" id="Hid" name="Hid" value="<%=hospital.h_id%>" />
+                        <input class="form-control" placeholder="날짜" type="date" name="i_vacctine" required="">
+                </div>
+                <div>
+                    <input class="form-div-control" placeholder="Pifizer 개수" type="number" min=0 step=10 name="pifizer"
+                        required="">
+                    <input class="form-div-control" placeholder="Astrazeneca 개수" type="number" min=0 step=10
+                        name="astrazeneca" required="">
+                    <input class="form-div-control" placeholder="Moderna 개수" type="number" min=0 step=10 name="moderna"
+                        required="">
+                </div>
+                <div>
+                    <button class="sub_bt" type="submit">등록</button>
+                </div>
+            </div>
+
+            </form>
+        </div>
+        </div>
+
+        </div>
+        </div>
+        </div>
+
+    </body>
+    <% include ./../footer.ejs %>
+    </html>

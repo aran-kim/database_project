@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<% include ./head.ejs %>
+    <body>
+        <div id="container">
+            <% include ./logoutheader.ejs %>
+        </div>
+    </body>
+    <div class="main">
+        <div class="title">
+            나의 예약 목록
+        </div>
+        <table class="reservation-list mgT20">
+            <colgroup>
+                <col style="width: 16%;">
+                <col style="width: 21%;">
+                <col style="width: 15%;">
+                <col style="width: 10%;">
+                <col style="width: 21%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th scope="col">병원 이름</th>
+                    <th scope="col">예약 날짜</th>
+                    <th scope="col">예약 정보</th>
+                    <th scope="col">백신 종류</th>
+                    <th scope="col">접종 완료 여부</th>
+                </tr>
+            </thead>
+            <body>
+                <% for(var i=0; i<check.length; i++){ var oneItem=check[i];
+                    var date = oneItem.r_date.getFullYear() + "-" + ("0" + (1 + oneItem.r_date.getMonth())).slice(-2) + "-" + ("0" + oneItem.r_date.getDate()).slice(-2)
+                    %>
+                        <tr>
+                            <td>
+                                <%=oneItem.h_name%>
+                            </td>
+                            <td>
+                                <%=date%>
+                                <%=oneItem.time%>
+                            </td>
+                            <% if(oneItem.Nth_injection==0){ %>
+                                <td>1차 예약</td>
+                            <%}else{%>
+                                <td>2차 예약</td>
+                            <%}%>
+                            <td>
+                                <%=oneItem.v_type%>
+                            </td>
+                            <td>
+                                <% if(oneItem.r_check == 1){%>
+                                    <button class="modify" onclick="location.href='/home/modify/<%=date%>'" disabled>접종 완료</button>
+                                <% } else { %>
+                                    <button class="modify" onclick="location.href='/home/modify/<%=date%>'">예약 변경</button>
+                                <% } %>
+                            </td>
+                        </tr>
+                </tbody>
+                <br>
+
+            <% } %>
+        </table>
+
+    </div>
+    </body>
+    <% include ./../footer.ejs %>
+
+</html>

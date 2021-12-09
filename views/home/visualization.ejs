@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+
+<% include ./head.ejs %>
+
+    <div id="container">
+        <% include ./logoutheader.ejs %>
+    </div>
+
+    <body>
+        <div class="main">
+            <div class="title">
+            </div>
+
+            <ul id="one">
+                <button id="bnt" onclick="sex()">성별 접종현황</button>
+                <button onclick="age()">나이별 접종현황</button>
+                <button onclick="vaccine()">백신 접종 선호도</button>
+                <button onclick="hospital()">병원별 잔여백신현황</button>
+            </ul>
+
+            <div class="div-visualization">
+                <div>
+                    <div class="div-visualization-info">
+                        <div>
+
+                                <div id="myChart" style = "width: 500px; height: 350px;"></div>
+                                <script>
+                                    function onLoadEvent() {
+                                        bnt.click();
+                                    }
+                                    window.onload = onLoadEvent;
+                                    function sex() {
+                                        document.querySelector('#myChart').style.display = "block";
+                                        document.querySelector('#ageChart').style.display = "none";
+                                        document.querySelector('#vaccineChart').style.display = "none";
+                                        document.querySelector('#hospital_Chart').style.display = "none";
+
+                                        google.charts.load('current', { 'packages': ['corechart'] });
+                                        google.charts.setOnLoadCallback(drawChart_sex);
+
+                                        function drawChart_sex() {
+
+                                            var data = google.visualization.arrayToDataTable([
+                                                ['sex_group', 'cnt'],
+            
+                                            <%for (var i = 0; i < sex.length; i++) {
+                                                var oneItem = sex[i];%>
+                                                    ['<%=oneItem.sex_group%>', parseInt("<%=oneItem.cnt%>")],
+                                             <% } %>
+                                            ]);
+
+                                            var options = {
+                                                title: '성별 백신 예약 현황',
+                                                curveType: 'function',
+                                            };
+
+                                            var chart = new google.visualization.BarChart(document.getElementById('myChart'));
+                                            chart.draw(data, options);
+                                        }
+                                    }
+                                </script>
+ 
+                                <div id="ageChart" style = "width: 500px; height: 350px;"></div>
+                                <script>
+                                    function age() {
+                                        document.querySelector('#myChart').style.display = "none";
+                                        document.querySelector('#ageChart').style.display = "block";
+                                        document.querySelector('#vaccineChart').style.display = "none";
+                                        document.querySelector('#hospital_Chart').style.display = "none";
+                                        google.charts.load('current', { 'packages': ['corechart'] });
+                                        google.charts.setOnLoadCallback(drawChart_age);
+
+                                        function drawChart_age() {
+
+                                            var data = google.visualization.arrayToDataTable([
+                                                ['age_group', 'cnt_age'],
+            
+                    <%for (var i = 0; i < age.length; i++) {
+                                                var oneItem = age[i];%>
+                                                    ['<%=oneItem.age_group%>', parseInt("<%=oneItem.cnt_age%>")],
+                        <% } %>
+                    ]);
+
+                                            var options = {
+                                                title: '연령별 백신 예약 현황',
+                                                curveType: 'function',
+                                            };
+
+                                            var chart = new google.visualization.BarChart(document.getElementById('ageChart'));
+                                            chart.draw(data, options);
+                                        }
+                                    }
+                                </script>
+
+                                <div id="vaccineChart" style = "width: 500px; height: 350px;"></div>
+                                <script>
+                                    function vaccine() {
+                                        document.querySelector('#myChart').style.display = "none";
+                                        document.querySelector('#ageChart').style.display = "none";
+                                        document.querySelector('#vaccineChart').style.display = "block";
+                                        document.querySelector('#hospital_Chart').style.display = "none";
+
+                                        google.charts.load('current', { 'packages': ['corechart'] });
+                                        google.charts.setOnLoadCallback(drawChart_vaccine);
+
+                                        function drawChart_vaccine() {
+
+                                            var data = google.visualization.arrayToDataTable([
+                                                ['vaccine_group', 'cnt'],
+            
+                    <%for (var i = 0; i < vaccine.length; i++) {
+                                                var oneItem = vaccine[i];%>
+                                                    ['<%=oneItem.v_type%>', parseInt("<%=oneItem.percentage%>")],
+                        <% } %>
+                    ]);
+
+                                            var options = {
+                                                title: '백신 접종 선호도',
+                                                is3D: true,
+                                                //pieHole: 0.4,
+
+                                            };
+
+                                            var chart = new google.visualization.PieChart(document.getElementById('vaccineChart'));
+                                            chart.draw(data, options);
+                                        }
+                                    }
+                                </script>
+
+                                <div id="hospital_Chart" style = "width: 500px; height: 350px;"></div>
+                                <script>
+                                    function hospital() {
+                                        document.querySelector('#myChart').style.display = "none";
+                                        document.querySelector('#ageChart').style.display = "none";
+                                        document.querySelector('#vaccineChart').style.display = "none";
+                                        document.querySelector('#hospital_Chart').style.display = "block";
+
+                                        google.charts.load('current', { 'packages': ['corechart'] });
+                                        google.charts.setOnLoadCallback(drawChart_hospital);
+
+                                        function drawChart_hospital() {
+
+                                            var data = google.visualization.arrayToDataTable([
+                                                ['vaccine_group', '화이자', '아스트라제네카', '모더나'],
+            
+                    <%for (var i = 0; i < h_vaccine.length; i++) {
+                                                var oneItem = h_vaccine[i];%>
+                                                    ['<%=oneItem.hospital%>', parseInt("<%=oneItem.pifizer%>"), parseInt("<%=oneItem.astrazeneca%>"), parseInt("<%=oneItem.moderna%>")],
+                        <% } %>
+                    ]);
+
+                                            var options = {
+                                                title: '병원별 잔여백신 현황',
+
+                                            };
+
+                                            var chart = new google.visualization.ColumnChart(document.getElementById('hospital_Chart'));
+                                            chart.draw(data, options);
+                                        }
+                                    }
+                                </script>
+                        </div>
+
+
+                        <div>
+                            <div id="map" style="width: 500px; height: 350px"></div>
+                            <br>
+                            <div>
+                                <script>
+                                    function dongChange() {
+                                        var target = $("select[id='Dong']");
+                                        target.children().remove();         
+                            <%                   
+                                for (var i = 0; i < dong.length; i++) {
+                                            var oneItem = dong[i];
+                                            var name = oneItem.dong_name.replace(/\r/g, "");
+                            %>  
+                                if (<%= oneItem.gu_id %> == document.getElementById("Gu").value)
+                                            target.append("<option value = <%=oneItem.dong_id%>>" + "<%=name%>" + "</option>");
+                            <% } %>
+                            };
+                                </script>
+                                <select id="City" name="City" style="width:150px;">
+                                    <% for(var i=0; i<city.length; i++){ var oneItem=city[i]; %>
+                                        <option value=<%=oneItem.city_id%>><%=oneItem.city_name%>
+                                        </option>
+                                        <% } %>
+                                </select>
+                                <select id="Gu" name="Gu" onchange="dongChange(this.value)" style="width:150px;">
+                                    <% for(var i=0; i<gu.length; i++){ var oneItem=gu[i]; %>
+                                        <option value=<%=oneItem.gu_id%>><%=oneItem.gu_name%>
+                                        </option>
+                                        <% } %>
+                                </select>
+                                <select id="Dong" name="Dong" class="Dong" style="width:150px;">
+                                    <option>선택</option>
+                                </select>
+                            </div>
+                            <script type="text/javascript"
+                                src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8c2ed21ab6956d39e256071885d15bfd&libraries=services"></script>
+                            <script>
+                                $(function () {
+                                    document.getElementById("Dong").onchange = () => {
+                                        map.setLevel(6);
+
+                                        delete_marker();
+
+                                        var fullAddress = $("#City option:selected").text()
+                                            + $("#Gu option:selected").text()
+                                            + $("#Dong option:selected").text();
+
+                                        var Dong_id = $("#Dong option:selected").val();
+                                        geocoder.addressSearch(fullAddress, function (result, status) {
+                                            // 정상적으로 검색이 완료됐으면 
+                                            if (status === kakao.maps.services.Status.OK) {
+
+                                                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+
+                                                // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                                                map.setCenter(coords);
+                                            }
+                                        });
+                <%for (var i = 0; i < Hospital.length; i++) {%>
+                    if (<%= Hospital[i].h_dong %> == Dong_id){
+                                    geocoder.addressSearch('<%=Hospital[i].h_address%>', function (result, status) {
+                                        // 정상적으로 검색이 완료됐으면 
+                                        if (status == kakao.maps.services.Status.OK) {
+                                            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                                            
+                                            var marker = new kakao.maps.Marker({
+                                                map: map,
+                                                position: coords,
+                                            });
+                                            
+                                            markerContainer.push(marker);
+                                            var divWrap = document.createElement('div');
+                                            divWrap.classList.add('wrap');
+
+                                            var divInfo = document.createElement('div');
+                                            divInfo.classList.add('info');
+
+                                            var divTitle = document.createElement('div');
+                                            divTitle.classList.add('title');
+                                            divTitle.innerHTML = '<%=Hospital[i].h_name%>';
+
+                                            var divClose = document.createElement('button');
+                                            divClose.classList.add('close');
+
+                                            divClose.onclick = function () {
+                                                customOverlay.setmap(null);
+                                            };
+
+                                            var divBody = document.createElement('div');
+                                            divBody.classList.add('body');
+
+                                            var divDesc = document.createElement('div');
+                                            divDesc.classList.add('desc');
+
+                                            var divEllipsis = document.createElement('div');
+                                            divEllipsis.classList.add('ellipsis');
+                                            divEllipsis.innerHTML = '<%= Hospital[i].h_address%>';
+
+                                            var hrefLink = document.createElement('a');
+                                            hrefLink.href = "https://www.kakaocorp.com/main";
+                                            hrefLink.classList.add('link');
+                                            hrefLink.innerHTML = '예약하기';
+
+                                            divDesc.append(divEllipsis, hrefLink);
+                                            divBody.append(divDesc);
+                                            divTitle.append(divClose);
+                                            divInfo.append(divTitle, divBody);
+                                            divWrap.append(divInfo);
+
+                                            var customOverlay = new kakao.maps.CustomOverlay({
+                                                position: marker.getPosition()
+                                            });
+
+                                            divClose.onclick = function () {
+                                                customOverlay.setMap(null);
+                                            }
+                                            customOverlay.setContent(divWrap);
+
+                                            // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+                                            kakao.maps.event.addListener(marker, 'click', function () {
+                                                customOverlay.setMap(map);
+                                            });
+
+                                        };
+                                    });
+                                }
+                                
+                <%}%>
+            };
+        });
+
+                                var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                                    mapOption = {
+                                        center: new daum.maps.LatLng(37.450701, 126.70667), // 지도의 중심좌표
+                                        level: 6 // 지도의 확대 레벨
+                                    };
+
+                                var markerContainer = [];
+                                var map = new daum.maps.Map(mapContainer, mapOption);
+
+                                var geocoder = new daum.maps.services.Geocoder();
+
+                                function delete_marker(){
+                                    for(let i =0; i<markerContainer.length; i++){
+                                        markerContainer[i].setMap(null);
+                                    }
+                                    markerContainer.splice(0, markerContainer.length);
+                                }
+      
+                            </script>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <% include ./../footer.ejs %>
+
+</html>

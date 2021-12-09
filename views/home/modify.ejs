@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<% include ./head.ejs %>
+
+  <body>
+    <div id="container">
+      <% include ./logoutheader.ejs %>
+    </div>
+  </body>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css"
+    rel="stylesheet" type="text/css" />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+
+  <body class="main-layout">
+    <!-- section -->
+    <div id="contact" class="section layout_padding">
+      <div class="container-fluid">
+        <div class="heading">
+          <h2><strong class="theme_blue">접종 예약</strong></h2>
+        </div>
+        <div class="main">
+          <script>
+            $(function () {
+              $("#Rdate").datetimepicker({
+                format: '20y-m-d',
+                defaultDate: '<%=r_date%>',
+                timepicker: false,
+                inline: true,
+                lang: 'ru'
+              });
+            });
+          </script>
+          <input type="text" name="Rdate" id="Rdate" placeholder='reservation 날짜 입력' onchange="location.href='../../home/modify/'+Rdate.value" />
+          <h4>선택 가능 병원</h4>
+          <%for(var i=0; i<hospital.length; i++) { var oneItem=hospital[i]; %>
+            <div>
+              <a href="../../../../../home/modify/<%=r_date%>/<%=oneItem.h_id%>">
+                <%=oneItem.h_name%>
+              </a>
+            </div>
+            <%}%>
+        </div>
+      </div>
+    </div>
+  </body>
+  <% include ./../footer.ejs %>
+
+</html>

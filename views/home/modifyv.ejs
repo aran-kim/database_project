@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<% include ./head.ejs %>
+
+    <body>
+        <div id="container">
+            <% include ./logoutheader.ejs %>
+        </div>
+    </body>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css"
+        rel="stylesheet" type="text/css" />
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+
+    <body class="main-layout">
+        <!-- section -->
+        <div id="contact" class="section layout_padding" method="get">
+            <div class="container-fluid">
+                <div class="heading">
+                    <h2><strong class="theme_blue">접종 예약</strong></h2>
+                    <h3><strong class="theme_blue"><%=date%></strong></h3>
+                    <h3><strong class="theme_blue"><%=vaccine.h_name%></strong></h3>                
+                </div>
+                <div class="main">
+                    <form id="modifyv" action="/home/modify" method="post">
+                        <input type="hidden" id="Hid" name="Hid" value="<%=vaccine.h_id%>" />
+                        <input type="hidden" id="Rdate" name="Rdate" value="<%=date%>" />
+                        <input type="hidden" id="Vtype" name="Vtype" value="<%=vtype%>" />
+                        <br>
+                        <script>
+                                const ableTime_ = new Set(['09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00']);
+                                <% for (var i = 0; i < timecnt.length; i++) {
+                                    var tmp = timecnt[i] %>
+                                    if (<%= tmp.cnt %> >= 1 ) {
+                                        ableTime_.delete('<%=tmp.time%>');
+                                    }
+                                <%}%>
+
+                                const ableTime = Array.from(ableTime_);
+
+                                $(function () {
+                                    $("#Rtime").datetimepicker({
+                                        datepicker: false,
+                                        format: 'H:i',
+                                        allowTimes: ableTime
+                                    });
+                                });
+
+                        </script>
+                        <input type="text" name="Rtime" id="Rtime" placeholder="Reservation 시간" required="" />
+                        <br>
+                        <button class="sub_bt" type="submit">예약</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+    <% include ./../footer.ejs %>
+
+</html>

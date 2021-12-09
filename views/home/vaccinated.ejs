@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<% include ./head.ejs %>
+
+    <body>
+        <div id="container">
+            <% include ./logoutheader.ejs %>
+        </div>
+    </body>
+
+    <div class="main">
+        <div class="title">
+            병원 접종 정보
+        </div>
+
+        <table class="reservation-list mgT20">
+
+            <colgroup>
+                <col style="width: 16%;">
+                <col style="width: 21%;">
+                <col style="width: 15%;">
+                <col style="width: 10%;">
+                <col style="width: 21%;">
+                <col style="width: 17%;">
+            </colgroup>
+
+            <thead>
+                <tr>
+                    <th scope="col">예약자 정보</th>
+                    <th scope="col">예약 날짜</th>
+                    <th scope="col">병원</th>
+                    <th scope="col">예약 정보</th>
+                    <th scope="col">백신 종류</th>
+                    <th scope="col">접종 완료 여부</th>
+                </tr>
+            </thead>
+
+
+            <body>
+                <% for(var i=0; i<reservation.length; i++){ var oneItem=reservation[i];
+                    var date = oneItem.r_date.getFullYear() + "-" + ("0" + (1 + oneItem.r_date.getMonth())).slice(-2) + "-" + ("0" + oneItem.r_date.getDate()).slice(-2)
+                    %>
+                    <tr>
+                        <td>
+                            <%=oneItem.u_id%>
+                        </td>
+                        <td>
+                            <%=date%>
+                            <%=oneItem.time%>
+                        </td>
+                        <td>
+                            <%=oneItem.h_name%>
+                        </td>
+                        <% if(oneItem.Nth_injection==0){ %>
+                            <td>1차 예약</td>
+                            <%}else{%>
+                                <td>2차 예약</td>
+                                <%}%>
+                                    <td>
+                                        <%=oneItem.v_type%>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <form action="/home/vaccinated" method="post">
+                                                <input type="hidden" name="Hid" value="<%=oneItem.h_id%>" />
+                                                <input type="hidden" name="Ninjection" value="<%=oneItem.Nth_injection%>" />
+                                                <input type="hidden" name="Rdate" value="<%=date%>" />
+                                                <input type="hidden" name="Vtype" value="<%=oneItem.v_type%>" />
+                                                <input type="hidden" name="Rtime" value="<%=oneItem.time%>" />
+                                                <input type="hidden" name="Uid" value="<%=oneItem.u_id%>" />
+                                                <button class="vaccinated" type="submit">
+                                                    접종 완료
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                    </tr>
+            </tbody>
+            <br>
+            <% } %>
+        </table>
+
+    </div>
+    </body>
+    <% include ./../footer.ejs %>
+    </html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<% include ./head.ejs %>
+  <!-- body -->
+
+  <body>
+    <div id="container">
+      <% include ./loginheader.ejs %>
+    </div>
+  </body>
+
+  <body class="main-layout">
+    <!-- section -->
+    <div id="contact" class="section layout_padding" method="post">
+      <div class="container-fluid">
+        <div class="sign_content">
+          <h2><strong>SIGN UP</strong></h2>
+          <div class = "join_content">
+          <form id="join" action="/join" method="post">
+            <div class="row">
+              <h3 class="join_id">
+                <label for="id">아이디</label>
+              </h3>
+              <div>
+                <input class="form-control" placeholder="ID" type="text" name="ID" required="">
+              </div>
+              <h3 class="join_password">
+                <label for="id">비밀번호</label>
+              </h3>
+              <div>
+                <input class="form-control" placeholder="Password" type="password" name="Password" required="">
+              </div>
+              <h3 class="join_name">
+                <label for="id">이름</label>
+              </h3>
+              <div>
+                <input class="form-control" placeholder="Name" type="text" name="Name" required="">
+              </div>
+              <h3 class="join_email">
+                <label for="id">이메일</label>
+              </h3>
+              <div>
+                <input class="form-control" placeholder="Email" type="Email" name="Email" required="">
+              </div>
+              <h3 class="join_phone">
+                <label for="id">전화번호</label>
+              </h3>
+              <div>
+                <input class="form-control" placeholder="01012341234 형태로" type="text" name="Phone" required="">
+              </div>
+              <h3 class="join_sex">
+                <label for="id" >성별</label>
+              </h3>
+              <div>
+                <select name="Sex" style="width: 110px; height: 40px;">
+                  <option value="male">male</option>
+                  <option value="female">female</option>
+                </select>
+              </div>
+              <h3 class="join_address">
+                <label for="id" >주소지</label>
+              </h3>
+              <div>
+                <script>
+                  function dongChange(e) {
+                    var target = $("select[id='Dong']");
+                    target.children().remove();         
+                  <%                   
+                    for (var i = 0; i < dong.length; i++) {
+                      var oneItem = dong[i];
+                      var name = oneItem.dong_name.replace(/\r/g, "");
+                  %>  
+                  if (<%= oneItem.gu_id %> == document.getElementById("Gu").value)
+                      target.append("<option value = <%=oneItem.dong_id%>>" + "<%=name%>" + "</option>");
+                  <% } %>
+                };
+                </script>
+                <select id="City" name="City" style="width: 110px; height: 40px;">
+                  <% for(var i=0; i<city.length; i++){ var oneItem=city[i]; %>
+                    <option value=<%=oneItem.city_id%>><%=oneItem.city_name%>
+                    </option>
+                    <% } %>
+                </select>
+                <select id="Gu" name="Gu" style="width: 110px; height: 40px;" onchange="dongChange(this.value);">
+                  <% for(var i=0; i<gu.length; i++){ var oneItem=gu[i]; %>
+                    <option value=<%=oneItem.gu_id%>><%=oneItem.gu_name%>
+                    </option>
+                    <% } %>
+                </select>
+                <select id="Dong" name="Dong" class="Dong" style="width: 110px; height: 40px;">
+                  <option>선택</option>
+                </select>
+              </div>
+              <h3 class="join_birthday">
+                <label for="id" >생년월일</label>
+              </h3>
+              <div>
+                <script>
+                  var picker = new Pikaday({
+                    field: document.getElementById('Birthday'),
+                    format: 'yyyy-MM-dd',
+                    toString(date, format) {
+                      let day = ("0" + date.getDate()).slice(-2);
+                      let month = ("0" + (date.getMonth() + 1)).slice(-2);
+                      let year = date.getFullYear();
+                      return `${year}-${month}-${day}`;
+                    }
+                  });
+                </script>
+                <input id="Birthday" type="date" name="Birthday">
+              </div>
+
+            </div>
+            <button class="form-div-control" type="submit">Sign Up</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    </div>
+    </div>
+
+  </body>
+
+
+</html>

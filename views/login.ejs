@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+  <% include ./head.ejs %>
+
+  <body>
+    <div id="container">
+      <% include ./loginheader.ejs %>
+    </div>
+
+<body class="main-layout">
+
+    <!-- section -->
+
+    <div id="contact" class="section layout_padding">
+        <div class="container-fluid">
+          
+                <div class="heading">
+                        <h2><strong class="theme_blue">LOGIN</strong></h2>
+                </div>
+                    <div class="full margin_top_20">
+                        <form id="login" action="/login" method="post">
+                        <div class="row">
+                            <div>
+                               <input class="form-control" placeholder="ID" type="text" name = "ID" required="">
+                            </div>
+                            <div>
+                              <input class="form-control" placeholder="Password" type="password" name = "Password" required="">
+                            </div>
+                        
+                        <button class="sub_bt" type="submit">LOG IN</button>
+                        <button class="log_bt" onclick="location.href='/join'" >SIGN UP</button>
+                    </div>
+                    </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+<% include ./footer.ejs %>
+</html>
+
